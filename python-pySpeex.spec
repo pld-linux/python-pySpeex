@@ -10,14 +10,15 @@ License:	LGPL
 Group:		Libraries/Python
 Source0:	http://www.freenet.org.nz/python/pySpeex/%{mod_name}-%{version}.tar.gz
 # Source0-md5:  5f6837cd74568fb58bb15d43fe2406ea
+Patch0:		%{name}-fix.patch
 URL:		http://www.freenet.org.nz/python/pySpeex/
 BuildRequires:	python-Pyrex
-BuildRequires:	python-devel
+BuildRequires:	python-devel >= 1:2.5
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
-BuildRequires:	speex-devel
+BuildRequires:	speex-devel >= 1:1.1.5
 %pyrequires_eq	python-modules
-Requires:	speex
+Requires:	speex >= 1:1.1.5
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -35,9 +36,11 @@ kodekiem w sposób przyrostowy przy użyciu metod 'encode' i 'decode'.
 
 %prep
 %setup -q -n %{mod_name}-%{version}
+%patch0 -p1
+
+find -type f -exec sed -i -e 's|#!.*python.*|#!%{_bindir}/python|g' "{}" ";"
 
 %build
-find -type f -exec sed -i -e 's|#!.*python.*|#!%{_bindir}/python|g' "{}" ";"
 python setup.py build
 
 %install
@@ -53,4 +56,5 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README doc
-%{py_sitedir}/*.so
+%attr(755,root,root) %{py_sitedir}/*.so
+%{py_sitedir}/speex-*.egg-info
