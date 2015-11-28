@@ -41,13 +41,13 @@ kodekiem w sposób przyrostowy przy użyciu metod 'encode' i 'decode'.
 find -type f -exec sed -i -e 's|#!.*python.*|#!%{_bindir}/python|g' "{}" ";"
 
 %build
-python setup.py build
+%py_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT
 
-python setup.py install --optimize=2 --root=$RPM_BUILD_ROOT
+%py_install
 %py_postclean
 
 %clean
