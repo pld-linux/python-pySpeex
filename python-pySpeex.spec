@@ -36,7 +36,7 @@ kodekiem w sposób przyrostowy przy użyciu metod 'encode' i 'decode'.
 
 %prep
 %setup -q -n %{mod_name}-%{version}
-%patch0 -p1
+%patch -P0 -p1
 
 find -type f -exec sed -i -e 's|#!.*python.*|#!%{_bindir}/python|g' "{}" ";"
 
